@@ -154,7 +154,17 @@
   [{:keys [op subject]} st]
   (when (= op :actuation/certify-material-grade)
     (let [b (store/batch st subject)]
-      (when (registry/contamination-percentage-exceeds-maximum? b)
+      (cond
+        ;; Either figure missing or non-numeric: the limit cannot be
+        ;; evaluated, so it is not "within limits". This used to fall
+        ;; through as "not over" and proceed.
+        ;; Only when the entity EXISTS: a missing entity is a different
+        ;; violation that another gate owns, and firing here would mask it.
+        (and b (not (registry/contamination-percentage-exceeds-maximum-checkable? b)))
+        [{:rule :contamination-exceeds-maximum
+          :detail "上限判定に必要な値が記録されていない -- 限度内と断定できないため進めない"}]
+
+        (registry/contamination-percentage-exceeds-maximum? b)
         [{:rule :contamination-exceeds-maximum
           :detail (str subject " の汚染率(" (:contamination-percentage b)
                       "%)が許容上限(" (:contamination-max-allowed b) "%)を超過")}]))))

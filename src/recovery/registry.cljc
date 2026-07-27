@@ -54,6 +54,17 @@
   (and (number? contamination-percentage) (number? contamination-max-allowed)
        (> contamination-percentage contamination-max-allowed)))
 
+(defn contamination-percentage-exceeds-maximum-checkable?
+  "Are both sides of `contamination-percentage-exceeds-maximum?` actually recorded?
+
+  That predicate answers only `over` / `not over`, and its
+  `(and (number? ...) (number? ...) ...)` guard made every un-recorded
+  case fall through as `not over` -- an entity missing either figure
+  passed the limit check silently. Callers must ask this first:
+  un-checkable is not within limits."
+  [{:keys [contamination-percentage contamination-max-allowed]}]
+  (boolean (and (number? contamination-percentage) (number? contamination-max-allowed))))
+
 (defn register-material-grade-certification
   "Validate + construct the MATERIAL-GRADE-CERTIFICATION registration
   DRAFT -- the operator's own act of certifying a real material
