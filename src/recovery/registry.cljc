@@ -27,7 +27,7 @@
   report itself (that is `recovery.operation`'s `:actuation/certify-
   material-grade`/`:actuation/publish-impact-report`, always human-
   gated -- see README `Actuation`)."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (defn- unsigned-certificate
   "Every certificate this actor produces is UNSIGNED -- signature is the
@@ -81,7 +81,7 @@
     (throw (ex-info "material-grade-certification: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "material-grade-certification: sequence must be >= 0" {})))
-  (let [cert-number (str (str/upper-case jurisdiction) "-GRD-" (zero-pad sequence 6))
+  (let [cert-number (str (str/upper jurisdiction) "-GRD-" (zero-pad sequence 6))
         record {"record_id" cert-number
                 "kind" "material-grade-certification-draft"
                 "batch_id" batch-id
@@ -106,7 +106,7 @@
     (throw (ex-info "impact-report: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "impact-report: sequence must be >= 0" {})))
-  (let [report-number (str (str/upper-case jurisdiction) "-IMP-" (zero-pad sequence 6))
+  (let [report-number (str (str/upper jurisdiction) "-IMP-" (zero-pad sequence 6))
         record {"record_id" report-number
                 "kind" "impact-report-draft"
                 "batch_id" batch-id
