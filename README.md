@@ -198,14 +198,14 @@ reference at all.
 
 | File | Role |
 |---|---|
-| `src/recovery/store.cljc` | **Store** protocol -- `MemStore` ‖ `DatomicStore` (`langchain.db`) + append-only audit ledger + separate material-grade-certification/impact-report history. No dynamically-filed sub-record -- both actuation ops act directly on a pre-seeded batch, and the double-actuation guards check dedicated `:material-grade-certified?`/`:impact-report-published?` booleans rather than a `:status` value |
-| `src/recovery/registry.cljc` | Material-grade-certification + impact-report draft records, plus `contamination-percentage-exceeds-maximum?` -- the FOURTH instance of this fleet's MAXIMUM-ceiling check family (`facility`/`school`/`card` established the first three) |
-| `src/recovery/facts.cljc` | Per-jurisdiction materials-recovery grading-standard catalog with an official spec-basis citation per entry, honest coverage reporting |
-| `src/recovery/recoveryadvisor.cljc` | **Recovery Advisor** -- `mock-advisor` ‖ `llm-advisor`; intake/verification/contamination-screening/material-grade-certification/impact-report proposals |
-| `src/recovery/governor.cljc` | **Traceability Governor** -- 4 HARD checks (spec-basis · evidence-incomplete · contamination-exceeds-maximum, pure ground-truth ceiling recompute · contamination-flag-unresolved, unconditional evaluation, the TWENTY-EIGHTH grounding of this discipline and FIRST specifically for a contamination-flag concept) + already-certified/already-published guards + 1 soft (confidence/actuation gate) |
-| `src/recovery/phase.cljc` | **Phase 0→3** -- read-only → assisted intake → assisted verify → supervised (both material-grade certification and impact-report publication always human; batch intake is the ONLY auto-eligible op, no direct capital risk) |
-| `src/recovery/operation.cljc` | **OperationActor** -- langgraph-clj StateGraph |
-| `src/recovery/sim.cljc` | demo driver |
+| `src/recovery/store.cljk` | **Store** protocol -- `MemStore` ‖ `DatomicStore` (`langchain.db`) + append-only audit ledger + separate material-grade-certification/impact-report history. No dynamically-filed sub-record -- both actuation ops act directly on a pre-seeded batch, and the double-actuation guards check dedicated `:material-grade-certified?`/`:impact-report-published?` booleans rather than a `:status` value |
+| `src/recovery/registry.cljk` | Material-grade-certification + impact-report draft records, plus `contamination-percentage-exceeds-maximum?` -- the FOURTH instance of this fleet's MAXIMUM-ceiling check family (`facility`/`school`/`card` established the first three) |
+| `src/recovery/facts.cljk` | Per-jurisdiction materials-recovery grading-standard catalog with an official spec-basis citation per entry, honest coverage reporting |
+| `src/recovery/recoveryadvisor.cljk` | **Recovery Advisor** -- `mock-advisor` ‖ `llm-advisor`; intake/verification/contamination-screening/material-grade-certification/impact-report proposals |
+| `src/recovery/governor.cljk` | **Traceability Governor** -- 4 HARD checks (spec-basis · evidence-incomplete · contamination-exceeds-maximum, pure ground-truth ceiling recompute · contamination-flag-unresolved, unconditional evaluation, the TWENTY-EIGHTH grounding of this discipline and FIRST specifically for a contamination-flag concept) + already-certified/already-published guards + 1 soft (confidence/actuation gate) |
+| `src/recovery/phase.cljk` | **Phase 0→3** -- read-only → assisted intake → assisted verify → supervised (both material-grade certification and impact-report publication always human; batch intake is the ONLY auto-eligible op, no direct capital risk) |
+| `src/recovery/operation.cljk` | **OperationActor** -- langgraph-clj StateGraph |
+| `src/recovery/sim.cljk` | demo driver |
 | `test/recovery/*_test.clj` | governor contract · phase invariants · store parity · registry conformance · facts coverage |
 
 ## Business-process coverage (honest)
