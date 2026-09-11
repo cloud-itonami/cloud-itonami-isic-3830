@@ -1,5 +1,5 @@
 (ns recovery.sim
-  "Demo driver -- `clojure -M:dev:run`. Walks a clean batch through
+  "Demo driver -- `kbb -M:dev:run`. Walks a clean batch through
   intake -> grading verification -> contamination-flag screening ->
   material-grade-certification proposal (always escalates) -> human
   approval -> commit, then through impact-report proposal (always
