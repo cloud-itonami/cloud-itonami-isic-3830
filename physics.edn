@@ -1,0 +1,42 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README "Robotics premise": a sorting and handling robot grades, bales and
+;; loads out recovered materials (ISIC 3830 materials recovery). The physical
+;; work: a sorting arm picking items off the picking-line belt, a bale-clamp
+;; truck carrying finished bales to the loadout bay, and the baling wire that
+;; must hold the bale's spring-back.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-3830"
+ :cases
+ [{:id :sort-pick-from-belt
+   :kind :manipulator
+   :procedure "sorting arm picks a recoverable item off the picking-line belt and throws it into the grade chute beside the belt in 0.6 s"
+   :params {:l1-m 0.50 :l2-m 0.45 :m1-kg 5.0 :m2-kg 3.5
+            :from [0.75 -0.10] :to [0.30 0.45] :duration-s 0.6 :steps 400}
+   :sweep {:param :payload-kg :values [0.2 0.5 1.0 2.0 3.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 90.0 :basis "estimate: continuous shoulder torque of a high-speed sorting arm of the ~3 kg payload class"}
+   :boundary {:lo 0.05 :hi 15.0}}
+  {:id :bale-clamp-to-loadout
+   :kind :transport
+   :procedure "bale-clamp truck carries an 800 kg OCC bale, clamped high at 2.5 m to clear the stacked bales, 50 m from the baler to the loadout bay and stops there"
+   :params {:mass-kg 3200.0 :payload-kg 800.0 :distance-m 50.0 :v-max-mps 2.5 :a-max-mps2 0.8
+            :drive-force-n 9000.0 :crr 0.02 :cog-height-m 0.70 :payload-cog-height-m 2.50
+            :support-half-length-m 0.75 :max-time-s 1200.0}
+   :sweep {:param :brake-decel-mps2 :values [1.0 2.0 3.0 4.0 5.0]}
+   :quantity :min-tipover-margin
+   :limit {:min 0.6 :basis "estimate: longitudinal stability reserve kept under hard braking with a raised bale on a counterbalance-type clamp truck"}
+   :boundary {:lo 0.5 :hi 8.0}}
+  {:id :bale-tie-wire-tensile
+   :kind :material
+   :procedure "tensile test of a 3.0 mm annealed low-carbon baling-wire sample from a new coil before it is loaded into the baler's tier"
+   :params {:length-m 0.10 :area-m2 7.07e-6 :youngs-modulus-pa 200.0e9 :hardening-pa 1.0e9
+            :density-kg-m3 7850.0 :max-force-n 4000.0}
+   :sweep {:param :yield-stress-pa :values [250.0e6 300.0e6 350.0e6 400.0e6 450.0e6]}
+   :quantity :yield-force-n
+   :limit {:min 2500.0 :basis "estimate: per-tie spring-back load of a dense OCC bale with 5 ties, the load each wire must carry without yielding"}
+   :boundary {:lo 150.0e6 :hi 500.0e6}}]}
