@@ -1,5 +1,5 @@
 (ns recovery.registry-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [recovery.registry :as r]))
 
 ;; ----------------------------- contamination-percentage-exceeds-maximum? -----------------------------
